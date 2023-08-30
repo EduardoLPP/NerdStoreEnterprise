@@ -1,0 +1,37 @@
+# Arquivos e pastas específicos do Visual Studio
+.vscode/
+.suo
+.user
+.sln.docstates
+
+# Binários e arquivos de build
+bin/
+obj/
+
+# Dependências do NuGet
+packages/
+
+# Arquivos de log
+*.log
+*.log.*
+
+# Arquivos temporários
+*.tmp
+*~
+*.swp
+*.bak
+
+# Arquivos de compilação
+*.dll
+*.pdb
+*.dll.config
+*.exe
+*.cache
+
+# Folders
+[Dd]ebug/
+[Rr]elease/
+[Tt]est[Rr]esult*/
+_ReSharper*/
+[Tt]est[Dd]ata/
+.vs2019/
