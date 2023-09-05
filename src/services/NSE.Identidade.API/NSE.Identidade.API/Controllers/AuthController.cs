@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using NSE.Identidade.API.Extensions;
 using NSE.Identidade.API.Models;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -78,6 +79,15 @@ namespace NSE.Identidade.API.Controllers
         {
             var user = await _userManager.FindByEmailAsync(email);
             var claims = await _userManager.GetClaimsAsync(user);
+
+            var identityClaims = await ObterClaimsUsuario(claims, user);
+            var encodedToken = CodificarToken(identityClaims);
+
+            return ObterRespostaToken(encodedToken, user, claims);
+        }
+
+        private async Task<ClaimsIdentity> ObterClaimsUsuario(IList<Claim> claims, IdentityUser user)
+        {
             var userRoles = await _userManager.GetRolesAsync(user);
 
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
@@ -87,13 +97,16 @@ namespace NSE.Identidade.API.Controllers
             claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
 
             foreach (var userRole in userRoles)
-            {
                 claims.Add(new Claim("role", userRole));
-            }
 
             ClaimsIdentity identityClaims = new ClaimsIdentity();
             identityClaims.AddClaims(claims);
 
+            return identityClaims;
+        }
+        
+        private string CodificarToken(ClaimsIdentity identityClaims)
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("MEUSEGREDOSUPERSECRETO");
 
@@ -105,10 +118,13 @@ namespace NSE.Identidade.API.Controllers
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             });
+            
+            return tokenHandler.WriteToken(token);
+        }
 
-            var encodedToken = tokenHandler.WriteToken(token);
-
-            var response = new UsuarioRespostaLogin()
+        private UsuarioRespostaLogin ObterRespostaToken(string encodedToken, IdentityUser user, IEnumerable<Claim> claims)
+        {
+            return new UsuarioRespostaLogin
             {
                 AccessToken = encodedToken,
                 ExpiresIn = TimeSpan.FromHours(2).TotalSeconds,
@@ -119,8 +135,6 @@ namespace NSE.Identidade.API.Controllers
                     Claims = claims.Select(c => new UsuarioClaim { Type = c.Type, Value = c.Value })
                 }
             };
-
-            return response;
         }
 
         private static long ToUnixEpochDate(DateTime date)
