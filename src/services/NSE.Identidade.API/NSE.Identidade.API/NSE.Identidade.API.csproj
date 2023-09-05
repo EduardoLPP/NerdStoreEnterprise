@@ -8,13 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Configuration\**" />
     <Compile Remove="Extentions\**" />
-    <Content Remove="Configuration\**" />
     <Content Remove="Extentions\**" />
-    <EmbeddedResource Remove="Configuration\**" />
     <EmbeddedResource Remove="Extentions\**" />
-    <None Remove="Configuration\**" />
     <None Remove="Extentions\**" />
   </ItemGroup>
 
