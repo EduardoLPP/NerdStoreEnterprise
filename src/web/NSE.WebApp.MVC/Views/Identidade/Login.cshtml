@@ -1,4 +1,4 @@
-﻿@model NSE.WebApp.MVC.Models.UsuarioRegistroViewModel
+﻿@model NSE.WebApp.MVC.Models.UsuarioLoginViewModel
 
 @{
     ViewData["Title"] = "Log in";
@@ -12,9 +12,11 @@
                 <h4>Seja bem vindo e boas compras</h4>
                 <hr />
 
+                <vc:summary></vc:summary>
+
                 <div class="form-group">
                     <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
+                    <input asp-for="Email" class="form-control" />  
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
@@ -25,7 +27,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary" value="Enviar"></button>
+                    <button type="submit" class="btn btn-primary" >Enviar</button>
                 </div>
                 <div class="form-group">
                     <p>
