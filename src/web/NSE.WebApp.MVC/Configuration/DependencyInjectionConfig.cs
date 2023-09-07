@@ -11,7 +11,7 @@ namespace NSE.Identidade.API.Configuration
     {
         public static void RegisterServices(this IServiceCollection services)
         {
-            services.AddHttpClient<IAutenticacaoService, AutenticacaoService>();
+            services.AddHttpClient<IAutenticacaoService, AuthService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUser, AspNetUser>();
         }
