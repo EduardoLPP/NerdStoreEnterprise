@@ -36,6 +36,7 @@ namespace NSE.Catalogo.API.Configuration
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors("Total");
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
