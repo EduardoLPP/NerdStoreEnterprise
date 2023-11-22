@@ -1,0 +1,45 @@
+﻿@using NSE.WebApp.MVC.Extensions
+@model IEnumerable<NSE.WebApp.MVC.ViewModels.ProdutoViewModel>
+
+@{
+    ViewData["Title"] = "Todos os produtos";
+}
+
+<section>
+    <div>
+        <div style="background-image: url(images/banners/Template.jpg); height: 200px; background-position: center; background-repeat: no-repeat; background-size: cover">
+            <div style="text-align: center;">
+                <img src="~/images/banners/nerdstore.png" />
+            </div>
+        </div>
+        <div class="container" style=" padding-top: 20px">
+            <div class="row">
+                @{
+                    foreach (var produto in Model.OrderBy(p=>p.Nome))
+                    {
+                        <div class="col-md-4">
+                            <div href="#" class="card card-product-grid">
+                                <a asp-controller="Catalogo" asp-action="ProdutoDetalhe" pxp-route-id="@produto.Id" class="img-wrap" style="padding-left: 45px">
+                                    <img src="~/images/produtos/@produto.Imagem" alt="@produto.Nome" style="width: 250px; height:250px; margin-bottom: 20px">
+                                </a>
+                                <figcaption class="info-wrap">
+                                    <a asp-controller="Catalogo" asp-action="ProdutoDetalhe" asp-route-id="@produto.Id" class="title" style="text-decoration: none">
+                                        <b style="font-family: RomanD; padding-left: 5px; font-weight: bolder; color: #000"> @produto.Nome</b>
+                                    </a>
+                                    <br/>
+                                    <small class="card-text">
+                                        <b style="font-family: RomanD; padding-left: 5px">@this.MensagemEstoque(produto.QuantidadeEstoque)</b><br />
+                                        <p style="font-family: RomanD; padding-left: 5px; font-weight: bold;">@produto.Descricao</p>
+                                    </small>
+                                </figcaption>
+                                <div class="card-footer price mt-1">
+                                    <h3 style="font-family: RomanD; padding-left: 5px">@this.FormatoMoeda(produto.Valor)</h3>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</section>
